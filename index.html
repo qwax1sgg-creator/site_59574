@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>Персона — Салон красоты | Новосибирск</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #b8957a;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Jost', sans-serif;
+            --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --color-bg: #ffffff;
+            --color-surface: #f7f7f5;
+            --color-text: #111111;
+            --color-text-secondary: #8a8a8a;
+            --color-border: #d4d4d4;
+            --color-overlay: rgba(0,0,0,0.35);
+            --color-overlay-heavy: rgba(0,0,0,0.5);
+            --color-header-bg: rgba(255,255,255,0.97);
+            --color-card-bg: #ffffff;
+            --color-row-hover: #f7f7f5;
+            --color-mobile-nav-bg: #ffffff;
+            --color-benefit-hover: #1a1a1a;
+            --color-benefit-text: rgba(255,255,255,0.55);
+            --color-benefit-border: rgba(255,255,255,0.1);
+        }
+
+        [data-theme="dark"] {
+            --color-bg: #0f0f0f;
+            --color-surface: #1a1a1a;
+            --color-text: #e8e8e8;
+            --color-text-secondary: #999999;
+            --color-border: #333333;
+            --color-overlay: rgba(0,0,0,0.55);
+            --color-overlay-heavy: rgba(0,0,0,0.7);
+            --color-header-bg: rgba(15,15,15,0.97);
+            --color-card-bg: #1a1a1a;
+            --color-row-hover: #252525;
+            --color-mobile-nav-bg: #0f0f0f;
+            --color-benefit-hover: #252525;
+            --color-benefit-text: rgba(255,255,255,0.5);
+            --color-benefit-border: rgba(255,255,255,0.06);
+
+            .header.scrolled { box-shadow: 0 1px 0 rgba(255,255,255,0.06); }
+            .map-wrap iframe { filter: grayscale(30%) invert(0.85) hue-rotate(180deg) !important; }
+            .gallery-item img { filter: brightness(0.85) saturate(0.8) !important; }
+            .gallery-item:hover img { filter: brightness(1) saturate(1) !important; }
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--sans);
+            font-weight: 300;
+            color: var(--color-text);
+            background: var(--color-bg);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        img { display: block; max-width: 100%; }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        .label {
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+        }
+
+        .section-title {
+            font-family: var(--serif);
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            line-height: 1.15;
+        }
+
+        .link-underline {
+            position: relative;
+            display: inline-block;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding-bottom: 4px;
+            transition: letter-spacing 0.45s var(--ease), opacity 0.3s;
+        }
+
+        .link-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--color-text);
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform 0.45s var(--ease);
+        }
+
+        .link-underline:hover {
+            letter-spacing: 0.18em;
+        }
+
+        .link-underline:hover::after {
+            transform: scaleX(1);
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            padding: 22px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease), padding 0.4s var(--ease);
+        }
+
+        .header.scrolled {
+            background: var(--color-header-bg);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .header.hero-top .logo,
+        .header.hero-top .nav a,
+        .header.hero-top .header-phone,
+        .header.hero-top .link-underline { color: #ffffff; }
+        .header.hero-top .link-underline::after { background: #ffffff; }
+        .header.hero-top .burger span { background: #ffffff; }
+
+        .logo {
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .header-address {
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            color: var(--color-text-secondary);
+            text-align: center;
+            flex: 1;
+        }
+
+        .header.hero-top .header-address { color: rgba(255,255,255,0.75); }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.35s var(--ease);
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: currentColor;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.4s var(--ease);
+        }
+
+        .nav a:hover { color: var(--color-text); }
+        .nav a:hover::after { transform: scaleX(1); }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .header-phone {
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .burger span {
+            display: block;
+            width: 22px;
+            height: 1px;
+            background: var(--color-text);
+            transition: background 0.3s;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            color: var(--color-text-secondary);
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            color: var(--color-text);
+        }
+
+        .header.hero-top .theme-toggle { color: rgba(255,255,255,0.75); }
+        .header.hero-top .theme-toggle:hover { color: #ffffff; }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.4s var(--ease);
+        }
+
+        .theme-toggle:hover svg {
+            transform: rotate(15deg);
+        }
+
+        .sun-icon { display: block; }
+        .moon-icon { display: none; }
+        [data-theme="dark"] .sun-icon { display: none; }
+        [data-theme="dark"] .moon-icon { display: block; }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 640px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('https://allwebs.ru/images/2026/06/28/91857aff8b66a9dbb20383411e13c152.jpg') center/cover no-repeat;
+            /* Фон для шапки (hero) — фото интерьера салона */
+            transform: scale(1.05);
+            animation: heroZoom 20s ease-out forwards;
+        }
+
+        @keyframes heroZoom {
+            to { transform: scale(1); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, var(--color-overlay) 0%, var(--color-overlay-heavy) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #ffffff;
+            padding: 0 24px;
+            animation: fadeUp 1.2s var(--ease) both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            opacity: 0.85;
+        }
+
+        .hero-brand {
+            font-family: var(--serif);
+            font-size: clamp(56px, 12vw, 120px);
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .hero-tagline {
+            font-family: var(--serif);
+            font-size: clamp(20px, 3vw, 32px);
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 0.04em;
+            margin-bottom: 32px;
+            opacity: 0.9;
+        }
+
+        .hero-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+
+        .hero-links a {
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            opacity: 0.75;
+            transition: opacity 0.3s;
+        }
+
+        .hero-links a:hover { opacity: 1; }
+
+        .hero-promo {
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            opacity: 0.8;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-hint svg { opacity: 0.7; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        .promo-strip {
+            background: var(--color-bg);
+            color: var(--color-text);
+            text-align: center;
+            padding: 18px 24px;
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .promo-strip span { color: var(--accent); }
+
+        .services {
+            padding: 120px 0;
+            background: var(--color-surface);
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .services-header .label { margin-bottom: 16px; display: block; }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--color-border);
+        }
+
+        .service-card {
+            background: var(--color-card-bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card-image {
+            aspect-ratio: 4/5;
+            overflow: hidden;
+        }
+
+        .service-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: transform 0.8s var(--ease), filter 0.8s var(--ease);
+        }
+
+        .service-card:hover .service-card-image img {
+            transform: scale(1.06);
+            filter: grayscale(0%);
+        }
+
+        .service-card-body {
+            padding: 40px 36px 48px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card-body .label { margin-bottom: 12px; }
+
+        .service-card-body h3 {
+            font-family: var(--serif);
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .service-card-body p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.8;
+            flex: 1;
+            margin-bottom: 28px;
+        }
+
+        .gallery {
+            padding: 120px 0;
+        }
+
+        .gallery-intro {
+            max-width: 640px;
+            margin: 0 auto 64px;
+            text-align: center;
+        }
+
+        .gallery-intro .label { margin-bottom: 16px; display: block; }
+        .gallery-intro p { font-size: 15px; color: var(--color-text-secondary); margin-top: 20px; line-height: 1.9; }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s var(--ease);
+        }
+
+        .gallery-item:hover img { transform: scale(1.08); }
+
+        .gallery-item.wide {
+            grid-column: span 2;
+            aspect-ratio: 2/1;
+        }
+
+        .gallery-review {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 32px 24px;
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+        }
+
+        .gallery-review-quote {
+            font-family: var(--serif);
+            font-size: 56px;
+            line-height: 1;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .gallery-review-text {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .gallery-review-author {
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--color-text);
+        }
+
+        .pricing {
+            padding: 120px 0;
+            background: var(--color-bg);
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .pricing-header .label { margin-bottom: 16px; display: block; }
+
+        .price-list {
+            max-width: 760px;
+            margin: 0 auto;
+            border: 1px solid var(--color-border);
+        }
+
+        .price-group + .price-group {
+            border-top: 1px solid var(--color-border);
+        }
+
+        .price-group-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 28px;
+            background: var(--color-surface);
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+        }
+
+        .price-group-head span {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 24px;
+            padding: 20px 28px;
+            border-top: 1px solid var(--color-border);
+            transition: background 0.25s var(--ease);
+        }
+
+        .price-row:first-of-type { border-top: none; }
+
+        .price-row:hover { background: var(--color-row-hover); }
+
+        .price-name {
+            font-size: 14px;
+            color: var(--color-text);
+            line-height: 1.5;
+        }
+
+        .price-cost {
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+
+        .pricing-note {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .pricing-cta {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .advantages {
+            padding: 120px 0;
+            background: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        .advantages .section-title { margin-bottom: 72px; text-align: center; }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--color-benefit-border);
+        }
+
+        .advantage-card {
+            background: var(--color-bg);
+            padding: 48px 44px;
+            transition: background 0.4s;
+        }
+
+        .advantage-card:hover { background: var(--color-benefit-hover); }
+
+        .advantage-num {
+            font-family: var(--serif);
+            font-size: 48px;
+            font-weight: 300;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .advantage-card h3 {
+            font-family: var(--serif);
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 14px;
+        }
+
+        .advantage-card p {
+            font-size: 14px;
+            color: var(--color-benefit-text);
+            line-height: 1.85;
+        }
+
+        .advantages-cta {
+            text-align: center;
+            margin-top: 64px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 18px 56px;
+            border: 1px solid var(--color-text);
+            color: var(--color-text);
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            background: linear-gradient(to right, var(--color-text) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: 100% 0;
+            transition:
+                background-position 0.55s var(--ease),
+                color 0.45s var(--ease),
+                transform 0.35s var(--ease),
+                box-shadow 0.35s var(--ease),
+                border-color 0.35s var(--ease);
+        }
+
+        .btn-primary:hover {
+            background-position: 0 0;
+            color: var(--color-bg);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-dark {
+            display: inline-block;
+            padding: 18px 56px;
+            color: var(--color-text);
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            border: 1px solid var(--color-bg);
+            background: linear-gradient(to right, var(--accent) 50%, var(--color-bg) 50%);
+            background-size: 200% 100%;
+            background-position: 100% 0;
+            transition:
+                background-position 0.55s var(--ease),
+                transform 0.35s var(--ease),
+                box-shadow 0.35s var(--ease),
+                border-color 0.45s var(--ease);
+        }
+
+        .btn-dark:hover {
+            background-position: 0 0;
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(184, 149, 122, 0.45);
+        }
+
+        .btn-dark:active {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(184, 149, 122, 0.3);
+        }
+
+        .booking-section {
+            padding: 120px 0;
+            background: var(--color-surface);
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .booking-text .label { margin-bottom: 16px; display: block; }
+        .booking-text .section-title { margin-bottom: 24px; }
+        .booking-text p { font-size: 15px; color: var(--color-text-secondary); line-height: 1.9; margin-bottom: 16px; }
+
+        .booking-form-wrap {
+            background: var(--color-card-bg);
+            padding: 52px 48px;
+        }
+
+        .booking-form-wrap h3 {
+            font-family: var(--serif);
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .booking-form-wrap .form-sub {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .form-field { margin-bottom: 20px; }
+
+        .form-field input {
+            width: 100%;
+            padding: 16px 0;
+            border: none;
+            border-bottom: 1px solid var(--color-border);
+            background: transparent;
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 300;
+            outline: none;
+            transition: border-color 0.3s;
+            color: var(--color-text);
+        }
+
+        .form-field input:focus { border-color: var(--color-text); }
+        .form-field input::placeholder { color: var(--color-text-secondary); letter-spacing: 0.04em; opacity: 0.5; }
+
+        .form-submit {
+            width: 100%;
+            margin-top: 12px;
+            padding: 18px;
+            color: var(--color-text);
+            border: 1px solid var(--color-bg);
+            font-family: var(--sans);
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            cursor: pointer;
+            background: linear-gradient(to right, var(--accent) 50%, var(--color-bg) 50%);
+            background-size: 200% 100%;
+            background-position: 100% 0;
+            transition:
+                background-position 0.55s var(--ease),
+                transform 0.35s var(--ease),
+                box-shadow 0.35s var(--ease),
+                border-color 0.45s var(--ease);
+        }
+
+        .form-submit:hover {
+            background-position: 0 0;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(184, 149, 122, 0.4);
+        }
+
+        .form-submit:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(184, 149, 122, 0.25);
+        }
+
+        .form-privacy {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            margin-top: 16px;
+            line-height: 1.5;
+            opacity: 0.6;
+        }
+
+        .instagram-block {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .instagram-block .section-title { margin-bottom: 20px; }
+        .instagram-block p { font-size: 15px; color: var(--color-text-secondary); max-width: 520px; margin: 0 auto 36px; line-height: 1.9; }
+
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-btn {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--color-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition:
+                transform 0.45s var(--ease),
+                border-color 0.35s var(--ease),
+                background 0.45s var(--ease),
+                color 0.35s var(--ease),
+                box-shadow 0.35s var(--ease);
+        }
+
+        .social-btn:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: var(--color-bg);
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 10px 24px rgba(184, 149, 122, 0.4);
+        }
+
+        .social-btn svg { width: 18px; height: 18px; }
+
+        .contact {
+            padding: 80px 0;
+            background: var(--color-bg);
+            color: var(--color-text);
+            text-align: center;
+        }
+
+        .contact .section-title { margin-bottom: 32px; font-size: clamp(28px, 4vw, 42px); }
+
+        .contact-info p {
+            font-size: 14px;
+            letter-spacing: 0.06em;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .contact-info .phone {
+            font-family: var(--serif);
+            font-size: 28px;
+            color: var(--color-text);
+            margin: 20px 0 32px;
+            letter-spacing: 0.04em;
+        }
+
+        .contact-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .contact-actions a {
+            padding: 14px 36px;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            border: 1px solid var(--color-border);
+            background: linear-gradient(to right, var(--color-text) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: 100% 0;
+            transition:
+                background-position 0.55s var(--ease),
+                color 0.45s var(--ease),
+                transform 0.35s var(--ease),
+                box-shadow 0.35s var(--ease),
+                border-color 0.35s var(--ease);
+        }
+
+        .contact-actions a:hover {
+            background-position: 0 0;
+            color: var(--color-bg);
+            border-color: var(--color-text);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-wrap iframe {
+            display: block;
+            width: 100%;
+            height: 440px;
+            border: none;
+            filter: grayscale(30%);
+        }
+
+        .map-link {
+            display: block;
+            text-align: center;
+            padding: 16px;
+            background: var(--color-bg);
+            color: var(--color-text-secondary);
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            transition: color 0.3s var(--ease);
+        }
+
+        .map-link:hover { color: var(--color-text); }
+
+        .footer {
+            padding: 32px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            color: var(--color-text-secondary);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--color-mobile-nav-bg);
+            z-index: 190;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .mobile-nav.open { display: flex; }
+
+        .mobile-nav a {
+            font-family: var(--serif);
+            font-size: 32px;
+            font-weight: 300;
+        }
+
+        @media (max-width: 1024px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .booking-grid { grid-template-columns: 1fr; gap: 48px; }
+            .advantages-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 24px; }
+            .header { padding: 18px 24px; }
+            .nav, .header-phone, .header-address { display: none; }
+            .burger { display: flex; }
+            .gallery-grid { grid-template-columns: 1fr 1fr; }
+            .gallery-item.wide { grid-column: span 2; }
+            .services, .gallery, .advantages, .booking-section { padding: 80px 0; }
+            .footer { flex-direction: column; gap: 12px; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+            .gallery-item.wide { grid-column: span 1; aspect-ratio: 1; }
+            .hero-links { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header hero-top" id="header">
+        <a href="#" class="logo">Персона</a>
+        <div class="header-address">ул. Титова, 264 · Новосибирск</div>
+        <nav class="nav">
+            <a href="#services">Услуги</a>
+            <a href="#price">Прайс</a>
+            <a href="#gallery">Галерея</a>
+            <a href="#about">О нас</a>
+            <a href="#contact">Контакты</a>
+        </nav>
+        <div class="header-right">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Переключить тему">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <a href="tel:+79831244344" class="header-phone">+7 983 124 43 44</a>
+            <a href="https://dikidi.net/2099807" class="link-underline" target="_blank" rel="noopener noreferrer">Записаться</a>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobile-nav">
+        <a href="#services">Услуги</a>
+        <a href="#price">Прайс</a>
+        <a href="#gallery">Галерея</a>
+        <a href="#about">О нас</a>
+        <a href="#contact">Контакты</a>
+        <a href="https://dikidi.net/2099807" target="_blank" rel="noopener noreferrer">Записаться</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-eyebrow">Салон красоты · Новосибирск</p>
+            <h1 class="hero-brand">Персона</h1>
+            <p class="hero-tagline">Стиль, который подчёркивает индивидуальность</p>
+            <div class="hero-links">
+                <a href="#services">Парикмахерские услуги</a>
+                <a href="#services">Маникюр и педикюр</a>
+                <a href="#services">Брови и ресницы</a>
+            </div>
+            <p class="hero-promo">ул. Титова, 264 · Работаем по предварительной записи</p>
+        </div>
+        <a href="#services" class="scroll-hint" aria-label="Вниз">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </a>
+    </section>
+
+    <div class="promo-strip">Салон красоты «Персона» — <span>ул. Титова, 264</span></div>
+
+    <section class="services" id="services">
+        <div class="container">
+            <div class="services-header reveal">
+                <span class="label">Услуги</span>
+                <h2 class="section-title">Всё для вашей красоты</h2>
+            </div>
+        </div>
+        <div class="services-grid reveal">
+            <article class="service-card">
+                <div class="service-card-image">
+                    <img src="https://allwebs.ru/images/2026/06/28/1c89a777b60571c64e5687ac07b19c19.jpg" alt="Парикмахерские услуги">
+                    <!-- Фото для карточки "Парикмахерские услуги" -->
+                </div>
+                <div class="service-card-body">
+                    <span class="label">01</span>
+                    <h3>Парикмахерские услуги</h3>
+                    <p>Женские и мужские стрижки, укладки, окрашивание, детские стрижки, плетение кос, свадебные и вечерние причёски.</p>
+                    <a href="https://dikidi.net/2099807" class="link-underline" target="_blank" rel="noopener noreferrer">Записаться</a>
+                </div>
+            </article>
+            <article class="service-card">
+                <div class="service-card-image">
+                    <img src="https://allwebs.ru/images/2026/06/28/381903542faf36b204d674aed2c9ec8e.jpg" alt="Ногтевой сервис">
+                    <!-- Фото для карточки "Ногтевой сервис" -->
+                </div>
+                <div class="service-card-body">
+                    <span class="label">02</span>
+                    <h3>Ногтевой сервис</h3>
+                    <p>Маникюр, педикюр, наращивание гелем и акрилом, гель-лак, аппаратный маникюр, парафиновые ванночки.</p>
+                    <a href="https://dikidi.net/2099807" class="link-underline" target="_blank" rel="noopener noreferrer">Записаться</a>
+                </div>
+            </article>
+            <article class="service-card">
+                <div class="service-card-image">
+                    <img src="https://allwebs.ru/images/2026/06/28/3c392db05341bd3cc095c4464eceb8c1.jpg" alt="Брови и ресницы">
+                    <!-- Фото для карточки "Брови и ресницы" -->
+                </div>
+                <div class="service-card-body">
+                    <span class="label">03</span>
+                    <h3>Брови и ресницы</h3>
+                    <p>Коррекция и окрашивание бровей, ламинирование, наращивание и ламинирование ресниц. SPA-уход для головы.</p>
+                    <a href="https://dikidi.net/2099807" class="link-underline" target="_blank" rel="noopener noreferrer">Записаться</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="pricing" id="price">
+        <div class="container">
+            <div class="pricing-header reveal">
+                <span class="label">Стоимость</span>
+                <h2 class="section-title">Прайс-лист</h2>
+            </div>
+            <div class="price-list reveal">
+                <div class="price-group">
+                    <div class="price-group-head">
+                        Парикмахерские услуги
+                        <span>6</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Женская стрижка</span>
+                        <span class="price-cost">от 800 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Мужская стрижка</span>
+                        <span class="price-cost">от 550 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Детская стрижка</span>
+                        <span class="price-cost">от 500 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Укладка</span>
+                        <span class="price-cost">от 700 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Плетение кос</span>
+                        <span class="price-cost">от 800 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Свадебная / вечерняя причёска</span>
+                        <span class="price-cost">от 2 000 ₽</span>
+                    </div>
+                </div>
+                <div class="price-group">
+                    <div class="price-group-head">
+                        Ногтевой сервис
+                        <span>5</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Маникюр аппаратный</span>
+                        <span class="price-cost">от 900 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Педикюр женский</span>
+                        <span class="price-cost">от 1 200 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Гель-лак</span>
+                        <span class="price-cost">от 1 300 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Наращивание гелем / акрилом</span>
+                        <span class="price-cost">от 1 800 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Парафиновые ванночки</span>
+                        <span class="price-cost">от 500 ₽</span>
+                    </div>
+                </div>
+                <div class="price-group">
+                    <div class="price-group-head">
+                        Брови и ресницы
+                        <span>5</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Коррекция бровей</span>
+                        <span class="price-cost">от 400 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Окрашивание бровей</span>
+                        <span class="price-cost">от 400 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Ламинирование бровей</span>
+                        <span class="price-cost">от 1 200 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Наращивание ресниц</span>
+                        <span class="price-cost">от 1 500 ₽</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">Ламинирование ресниц</span>
+                        <span class="price-cost">от 1 500 ₽</span>
+                    </div>
+                </div>
+                <div class="price-group">
+                    <div class="price-group-head">
+                        SPA-услуги
+                        <span>1</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-name">SPA для головы</span>
+                        <span class="price-cost">от 1 000 ₽</span>
+                    </div>
+                </div>
+            </div>
+            <p class="pricing-note reveal">Точную стоимость уточняйте у мастера</p>
+            <div class="pricing-cta reveal">
+                <a href="https://dikidi.net/2099807" class="btn-dark" target="_blank" rel="noopener noreferrer">Записаться</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <div class="gallery-intro reveal">
+                <span class="label">Портфолио</span>
+                <h2 class="section-title">Галерея</h2>
+                <p>В салоне «Персона» работают опытные мастера с индивидуальным подходом. Используются только качественные материалы и современное оборудование. Уютная атмосфера и внимательное отношение ждут вас.</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="gallery-grid reveal">
+                <div class="gallery-item wide">
+                    <img src="https://allwebs.ru/images/2026/06/28/933e94f2a61d4bb70bc751d127d58ae4.jpg" alt="Салон">
+                    <!-- Фото для галереи №1 — интерьер салона (широкое) -->
+                </div>
+                <div class="gallery-item">
+                    <img src="ВАША ССЫЛКА" alt="Стрижка">
+                    <!-- Фото для галереи №2 — стрижка -->
+                </div>
+                <div class="gallery-item">
+                    <img src="ВАША ССЫЛКА" alt="Брови">
+                    <!-- Фото для галереи №3 — брови -->
+                </div>
+                <div class="gallery-item">
+                    <img src="ВАША ССЫЛКА" alt="Маникюр">
+                    <!-- Фото для галереи №4 — маникюр -->
+                </div>
+                <div class="gallery-review">
+                    <span class="gallery-review-quote">"</span>
+                    <p class="gallery-review-text">Отличный салон! Хожу уже полгода, всегда довольна результатом. Мастера настоящие профессионалы, очень душевная атмосфера.</p>
+                    <span class="gallery-review-author">Анна</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="advantages" id="about">
+        <div class="container">
+            <h2 class="section-title reveal">Почему выбирают нас</h2>
+            <div class="advantages-grid reveal">
+                <div class="advantage-card">
+                    <div class="advantage-num">01</div>
+                    <h3>Опытные мастера</h3>
+                    <p>В салоне работают профессионалы с многолетним опытом, регулярно повышающие квалификацию на курсах и мастер-классах.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-num">02</div>
+                    <h3>Уютная атмосфера</h3>
+                    <p>Комфортное пространство, где приятно находиться. Мы создаём расслабляющую обстановку, чтобы каждый визит был в радость.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-num">03</div>
+                    <h3>Удобное расположение</h3>
+                    <p>ул. Титова, 264. Рядом остановка общественного транспорта «Спортивная», есть парковка. Доступен подъёмник.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-num">04</div>
+                    <h3>Качество и гарантия</h3>
+                    <p>Используем профессиональную косметику и стерильные инструменты. Оплата наличными или переводом на карту.</p>
+                </div>
+            </div>
+            <div class="advantages-cta reveal">
+                <a href="https://dikidi.net/2099807" class="btn-primary" target="_blank" rel="noopener noreferrer">Записаться онлайн</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="booking-section">
+        <div class="container">
+            <div class="booking-grid">
+                <div class="booking-text reveal">
+                    <span class="label">О салоне</span>
+                    <h2 class="section-title">Пространство, где рождается красота</h2>
+                    <p>«Персона» — это салон красоты в Ленинском районе Новосибирска на улице Титова. Мы предлагаем полный спектр услуг: от стрижек и укладок до маникюра, педикюра и оформления бровей.</p>
+                    <p>Работаем по предварительной записи ежедневно с 10:00. Ждём вас!</p>
+                </div>
+                <div class="booking-form-wrap reveal">
+                    <h3>Запись онлайн</h3>
+                    <p class="form-sub">Оставьте имя — и мы свяжемся с вами в WhatsApp</p>
+                    <form id="booking-form">
+                        <div class="form-field">
+                            <input type="text" name="name" placeholder="Ваше имя" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="tel" name="phone" placeholder="Ваш телефон" required>
+                        </div>
+                        <button type="submit" class="form-submit">Отправить</button>
+                    </form>
+                    <p class="form-privacy">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="instagram-block">
+        <div class="container reveal">
+            <h2 class="section-title">Свяжитесь с нами</h2>
+            <p>Подписывайтесь на наши соцсети, чтобы быть в курсе акций и новостей салона «Персона».</p>
+            <div class="social-row">
+                <a href="https://dikidi.net/2099807" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                </a>
+                <a href="https://vk.com" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="VK">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C2.755 0 0 2.755 0 8.316v7.368C0 21.245 2.755 24 8.316 24h7.368C21.245 24 24 21.245 24 15.684V8.316C24 2.755 21.245 0 15.684 0zm3.598 16.547h-1.548c-.653 0-.854-.495-1.997-1.655-1.034-1.007-1.488-1.14-1.74-1.14-.356 0-.456.14-.456.52v1.47c0 .388-.128.604-1.151.604-1.69 0-3.564-1.043-4.873-2.987-1.394-1.928-1.851-3.14-1.851-3.424 0-.168.168-.319.444-.319h1.56c.44 0 .604.196.77.644.838 2.237 1.72 3.424 2.221 3.424.168 0 .235-.08.235-.583v-2.241c0-.992-.62-1.087-.62-1.456 0-.168.14-.336.336-.336h2.514c.364 0 .476.168.476.588v3.216c0 .364.14.476.252.476.196 0 .364-.112.728-.476.784-.868 1.484-2.464 1.484-2.464.084-.224.252-.364.476-.364h1.568c.532 0 .644.252.532.7-.532 1.624-2.38 3.752-2.38 3.752-.196.252-.252.392 0 .672.168.224.728.7 1.12 1.12.616.672 1.12 1.232 1.512 1.68.364.476.252.812-.168.812z"/></svg>
+                </a>
+                <a href="https://t.me" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container reveal">
+            <h2 class="section-title">Контакты</h2>
+            <div class="contact-info">
+                <p>ул. Титова, 264 · Новосибирск</p>
+                <p>Ежедневно с 10:00, по предварительной записи</p>
+                <p class="phone"><a href="tel:+79831244344">+7 983 124 43 44</a></p>
+            </div>
+            <div class="contact-actions">
+                <a href="https://dikidi.net/2099807" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="https://go.2gis.com/y6crk" target="_blank" rel="noopener noreferrer">На карте</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="map-wrap" id="map">
+        <iframe src="https://yandex.ru/map-widget/v1/?text=%D1%83%D0%BB.%20%D0%A2%D0%B8%D1%82%D0%BE%D0%B2%D0%B0%2C%20264%2C%20%D0%9D%D0%BE%D0%B2%D0%BE%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA&z=16" allowfullscreen loading="lazy" title="Карта — Персона"></iframe>
+        <a href="https://go.2gis.com/y6crk" class="map-link" target="_blank" rel="noopener noreferrer">Открыть карту в 2GIS</a>
+    </div>
+
+    <footer class="footer">
+        <span>© Персона</span>
+        <span>ул. Титова, 264 · Новосибирск · +7 983 124 43 44</span>
+        <a href="privacy.html" style="font-size:11px;letter-spacing:0.06em;color:var(--color-text-secondary);">Политика конфиденциальности</a>
+    </footer>
+
+    <script>
+        const WHATSAPP_URL = 'https://dikidi.net/2099807';
+        const CONTACTS = {
+            phone: '+79831244344',
+            whatsapp: 'https://dikidi.net/2099807',
+            map: 'https://go.2gis.com/y6crk'
+        };
+        const header = document.getElementById('header');
+        const burger = document.getElementById('burger');
+        const mobileNav = document.getElementById('mobile-nav');
+
+        window.addEventListener('scroll', () => {
+            const heroHeight = window.innerHeight * 0.6;
+            if (window.scrollY > heroHeight) {
+                header.classList.add('scrolled');
+                header.classList.remove('hero-top');
+            } else {
+                header.classList.remove('scrolled');
+                header.classList.add('hero-top');
+            }
+        });
+
+        burger.addEventListener('click', () => {
+            mobileNav.classList.toggle('open');
+        });
+
+        mobileNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => mobileNav.classList.remove('open'));
+        });
+
+        document.getElementById('booking-form').addEventListener('submit', e => {
+            e.preventDefault();
+            window.location.href = WHATSAPP_URL;
+        });
+
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.12 });
+
+        reveals.forEach(el => observer.observe(el));
+
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme) {
+            html.setAttribute('data-theme', savedTheme);
+        } else if (prefersDark) {
+            html.setAttribute('data-theme', 'dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? '' : 'dark';
+            if (next) {
+                html.setAttribute('data-theme', 'dark');
+            } else {
+                html.removeAttribute('data-theme');
+            }
+            localStorage.setItem('theme', next);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+# ===== Безопасность =====
+
+# SSL/HTTPS (включи после установки сертификата)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# X-Frame-Options — запрет на встраивание в iframe на других сайтах
+Header always set X-Frame-Options "SAMEORIGIN"
+
+# X-Content-Type-Options — запрет MIME-сниффинга
+Header always set X-Content-Type-Options "nosniff"
+
+# Referrer-Policy — сколько данных о реферере передавать
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+# Permissions-Policy — ограничение API браузера
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), autoplay=()"
+
+# Content-Security-Policy — защита от XSS
+Header always set Content-Security-Policy "\
+  default-src 'self'; \
+  script-src 'unsafe-inline' 'self'; \
+  style-src 'unsafe-inline' 'self' https://fonts.googleapis.com; \
+  font-src 'self' https://fonts.gstatic.com; \
+  img-src 'self' https://allwebs.ru data:; \
+  frame-src 'self' https://yandex.ru; \
+  form-action 'self'; \
+  connect-src 'self'; \
+  manifest-src 'none'"
+
+# ===== Производительность =====
+
+# Кеширование статики на 1 месяц
+<FilesMatch "\.(jpg|jpeg|png|gif|ico|svg|webp)$">
+  Header set Cache-Control "public, max-age=2592000"
+</FilesMatch>
+
+<FilesMatch "\.(css|js)$">
+  Header set Cache-Control "public, max-age=604800"
+</FilesMatch>
+
+# ===== Запрет доступа к скрытым файлам =====
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# ===== Русская локаль по умолчанию =====
+AddDefaultCharset UTF-8
